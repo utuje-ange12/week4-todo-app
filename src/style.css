@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* Dark mode is switched by adding the "dark" class to <html> */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  /* Visible keyboard focus on every interactive element */
+  :focus-visible {
+    outline: 3px solid #6366f1;
+    outline-offset: 2px;
+  }
+
+  button,
+  select {
+    cursor: pointer;
+  }
+}
