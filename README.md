@@ -5,7 +5,7 @@ A themed to-do list for students. Add study tasks, give them a priority, edit th
 **Built by:** UTUJE ANGE FIDELE
 **Course:** Advanced Frontend Web Development, Week 4
 
-- **Live app:** PASTE_LIVE_LINK_HERE
+- **Live app:** https://week4todoapp.netlify.app
 - **Video demo:** PASTE_VIDEO_LINK_HERE
 
 Built with HTML, Tailwind CSS v4 (Vite) and vanilla JavaScript. No frameworks.
