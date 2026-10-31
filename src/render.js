@@ -20,6 +20,7 @@ const FILTER_OFF =
 // Shortcut for document.getElementById.
 const $ = (id) => document.getElementById(id);
 
+
 // Create an element with classes and optional text (textContent keeps it safe).
 function el(tag, className, text) {
   const node = document.createElement(tag);
@@ -124,7 +125,13 @@ function renderEmpty(state, visibleCount) {
   empty.hidden = visibleCount > 0;
   if (visibleCount === 0) empty.textContent = emptyMessage(state);
 }
-
+// Update the progress bar and its percentage text.
+function renderProgress(state) {
+  const percent = progressPercent(state.tasks);
+  $('progress-fill').style.width = `${percent}%`;
+  $('progress-text').textContent = `${percent}%`;
+  $('progress-bar').setAttribute('aria-valuenow', String(percent));
+}
 // Show "N task(s) left" with correct singular/plural.
 function renderCounter(state) {
   const count = countActive(state.tasks);

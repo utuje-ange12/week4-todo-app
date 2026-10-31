@@ -82,3 +82,9 @@ export function progressPercent(tasks) {
   const done = tasks.filter((item) => item.done === true).length;
   return Math.round((done / tasks.length) * 100);
 }
+// Return the percentage (0 to 100) of tasks that are done.
+export function progressPercent(tasks) {
+  if (tasks.length === 0) return 0;
+  const done = tasks.filter((item) => item.done === true).length;
+  return Math.round((done / tasks.length) * 100);
+}
