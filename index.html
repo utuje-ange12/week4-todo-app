@@ -4,118 +4,95 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Study Planner</title>
+  <meta name="description" content="A simple study task planner with priorities, search and dark mode.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E📝%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="/src/style.css">
   <script type="module" src="/src/main.js"></script>
 </head>
 <body class="min-h-screen bg-slate-100 text-slate-900 dark:bg-slate-900 dark:text-slate-100">
-  <main class="mx-auto max-w-xl px-4 py-8">
+<main class="mx-auto max-w-xl px-4 py-8">
 
-    <header class="mb-6 flex items-start justify-between gap-4">
-      <div>
-        <h1 class="text-3xl font-bold">Study Planner</h1>
-        <p class="text-slate-600 dark:text-slate-400">Stay on top of every study session.</p>
-      </div>
-      <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode"
-        class="rounded-lg bg-white px-3 py-2 text-lg shadow dark:bg-slate-800"></button>
-    </header>
-
-    <section class="rounded-2xl bg-white p-4 shadow sm:p-6 dark:bg-slate-800">
-
-      <!-- Add task form -->
-      <form id="task-form" class="flex flex-col gap-2 sm:flex-row" novalidate>
-        <div class="flex-1">
-          <label for="task-input" class="sr-only">New task</label>
-          <input id="task-input" type="text" autocomplete="off" placeholder="e.g. Revise chapter 4"
-            aria-describedby="form-error"
-            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 dark:border-slate-600 dark:bg-slate-700">
-        </div>
-        <div class="flex gap-2">
-          <label for="priority-select" class="sr-only">Priority</label>
-          <select id="priority-select"
-            class="rounded-lg border border-slate-300 bg-white px-2 py-2 dark:border-slate-600 dark:bg-slate-700">
-            <option value="high">High</option>
-            <option value="medium" selected>Medium</option>
-            <option value="low">Low</option>
-          </select>
-          <button type="submit"
-            class="flex-1 rounded-lg bg-teal-600 px-4 py-2 font-semibold text-white hover:bg-teal-700 sm:flex-none">Add</button>
-        </div>
-      </form>
-      <p id="form-error" role="alert" hidden class="mt-2 text-sm text-red-600 dark:text-red-400"></p>
-
-      <!-- Search + sort -->
-      <div class="mt-4 flex flex-col gap-2 sm:flex-row">
-        <div class="flex-1">
-          <label for="search-input" class="sr-only">Search tasks</label>
-          <input id="search-input" type="search" placeholder="Search tasks..." autocomplete="off"
-            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 dark:border-slate-600 dark:bg-slate-700">
-        </div>
-        <div>
-          <label for="sort-select" class="sr-only">Sort tasks</label>
-          <select id="sort-select"
-            class="w-full rounded-lg border border-slate-300 bg-white px-2 py-2 dark:border-slate-600 dark:bg-slate-700">
-            <option value="created">Order added</option>
-            <option value="priority">Priority (high first)</option>
-          </select>
-        </div>
-      </div>
-      <!-- Progress bar -->
-      <div class="mt-4">
-        <div class="mb-1 flex justify-between text-sm text-slate-600 dark:text-slate-300">
-          <span>Progress</span>
-          <span id="progress-text">0%</span>
-        </div>
-        <div id="progress-bar" role="progressbar" aria-label="Tasks completed"
-             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
-             class="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-          <div id="progress-fill" class="h-full rounded-full bg-teal-600 transition-all"></div>
-        </div>
-      </div>
-      <!-- Progress bar -->
-      <div class="mt-4">
-        <div class="mb-1 flex justify-between text-sm text-slate-600 dark:text-slate-300">
-          <span>Progress</span>
-          <span id="progress-text">0%</span>
-        </div>
-        <div id="progress-bar" role="progressbar" aria-label="Tasks completed"
-             aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
-             class="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
-          <div id="progress-fill" class="h-full rounded-full bg-indigo-600 transition-all"></div>
-        </div>
-      </div>
-      <!-- Filters -->
-      <nav id="filters" aria-label="Filter tasks" class="mt-4 flex flex-wrap gap-2">
-        <button type="button" data-filter="all">All</button>
-        <button type="button" data-filter="active">Active</button>
-        <button type="button" data-filter="completed">Completed</button>
-      </nav>
-
-      <!-- Task list + empty state -->
-      <ul id="task-list" class="mt-4 space-y-2"></ul>
-      <p id="empty-state" hidden class="mt-4 rounded-xl border-2 border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-600 dark:text-slate-400"></p>
-
-      <!-- Footer: counter + clear completed -->
-      <div class="mt-4 flex items-center justify-between gap-2 text-sm">
-        <p id="counter" aria-live="polite" class="text-slate-600 dark:text-slate-300"></p>
-        <button id="clear-completed" type="button"
-          class="rounded-lg px-3 py-1.5 font-medium text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40 dark:text-red-400 dark:hover:bg-slate-700">
-          Clear completed
-        </button>
-      </div>
-    </section>
-  </main>
-
-  <!-- Delete confirmation -->
-  <dialog id="confirm-dialog" aria-labelledby="confirm-title"
-    class="m-auto w-[90%] max-w-sm rounded-2xl bg-white p-6 text-slate-900 shadow-xl backdrop:bg-black/50 dark:bg-slate-800 dark:text-slate-100">
-    <h2 id="confirm-title" class="text-lg font-bold">Delete this task?</h2>
-    <p id="confirm-text" class="mt-2 break-words text-slate-600 dark:text-slate-300"></p>
-    <div class="mt-5 flex justify-end gap-2">
-      <button id="confirm-cancel" type="button"
-        class="rounded-lg bg-slate-200 px-4 py-2 font-medium text-slate-800 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-100">Cancel</button>
-      <button id="confirm-delete" type="button"
-        class="rounded-lg bg-red-600 px-4 py-2 font-semibold text-white hover:bg-red-700">Delete</button>
+  <header class="mb-6 flex items-start justify-between gap-4">
+    <div>
+      <h1 class="text-3xl font-bold">Study Planner</h1>
+      <p class="text-slate-600 dark:text-slate-400">Stay on top of every study session.</p>
     </div>
-  </dialog>
-</body>
-</html>
+    <button id="theme-toggle" type="button" aria-pressed="false" aria-label="Toggle dark mode"
+            class="rounded-lg bg-white px-3 py-2 text-lg shadow dark:bg-slate-800"></button>
+  </header>
+
+  <section class="rounded-2xl bg-white p-4 shadow sm:p-6 dark:bg-slate-800">
+
+    <!-- Add task form -->
+    <form id="task-form" class="flex flex-col gap-2 sm:flex-row" novalidate>
+      <div class="flex-1">
+        <label for="task-input" class="sr-only">New task</label>
+        <input id="task-input" type="text" autocomplete="off" placeholder="e.g. Revise chapter 4"
+               aria-describedby="form-error"
+               class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 dark:border-slate-600 dark:bg-slate-700">
+      </div>
+      <div class="flex gap-2">
+        <label for="priority-select" class="sr-only">Priority</label>
+        <select id="priority-select"
+                class="rounded-lg border border-slate-300 bg-white px-2 py-2 dark:border-slate-600 dark:bg-slate-700">
+          <option value="high">High</option>
+          <option value="medium" selected>Medium</option>
+          <option value="low">Low</option>
+        </select>
+        <button type="submit"
+                class="flex-1 rounded-lg bg-teal-600 px-4 py-2 font-semibold text-white hover:bg-teal-700 sm:flex-none">Add</button>
+      </div>
+    </form>
+    <p id="form-error" role="alert" hidden class="mt-2 text-sm text-red-600 dark:text-red-400"></p>
+
+    <!-- Search + sort -->
+    <div class="mt-4 flex flex-col gap-2 sm:flex-row">
+      <div class="flex-1">
+        <label for="search-input" class="sr-only">Search tasks</label>
+        <input id="search-input" type="search" placeholder="Search tasks..." autocomplete="off"
+               class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 dark:border-slate-600 dark:bg-slate-700">
+      </div>
+      <div>
+        <label for="sort-select" class="sr-only">Sort tasks</label>
+        <select id="sort-select"
+                class="w-full rounded-lg border border-slate-300 bg-white px-2 py-2 dark:border-slate-600 dark:bg-slate-700">
+          <option value="created">Order added</option>
+          <option value="priority">Priority (high first)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Progress bar -->
+    <div class="mt-4">
+      <div class="mb-1 flex justify-between text-sm text-slate-600 dark:text-slate-300">
+        <span>Progress</span>
+        <span id="progress-text">0%</span>
+      </div>
+      <div id="progress-bar" role="progressbar" aria-label="Tasks completed"
+           aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+           class="h-2 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
+        <div id="progress-fill" class="h-full rounded-full bg-teal-600 transition-all"></div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <nav id="filters" aria-label="Filter tasks" class="mt-4 flex flex-wrap gap-2">
+      <button type="button" data-filter="all">All</button>
+      <button type="button" data-filter="active">Active</button>
+      <button type="button" data-filter="completed">Completed</button>
+    </nav>
+
+    <!-- Task list + empty state -->
+    <ul id="task-list" class="mt-4 space-y-2"></ul>
+    <p id="empty-state" hidden class="mt-4 rounded-xl border-2 border-dashed border-slate-300 p-6 text-center text-slate-500 dark:border-slate-600 dark:text-slate-400"></p>
+
+    <!-- Footer: counter + clear completed -->
+    <div class="mt-4 flex items-center justify-between gap-2 text-sm">
+      <p id="counter" aria-live="polite" class="text-slate-600 dark:text-slate-300"></p>
+      <button id="clear-completed" type="button"
+              class="rounded-lg px-3 py-1.5 font-medium text-red-600 hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-40 dark:text-red-400 dark:hover:bg-slate-700">
+        Clear completed
+      </button>
+    </div>
+  </section>
+</main>
