@@ -8,7 +8,7 @@ const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 };
 // Check task text and return an error message, or '' when it is valid.
 export function validateText(raw) {
   const text = raw.trim();
-  if (text === '') return 'Please type a task first.';
+  if (text === '') return 'Oops, your task is empty. Type something first!';
   if (text.length > MAX_LENGTH) {
     return `Task is too long (${text.length}/${MAX_LENGTH} characters).`;
   }

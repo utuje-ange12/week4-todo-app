@@ -31,7 +31,7 @@ function el(tag, className, text) {
 
 // Build the checkbox that toggles a task.
 function createCheckbox(task) {
-  const box = el('input', 'h-5 w-5 shrink-0 cursor-pointer accent-teal-600');
+  const box = el('input', 'h-5 w-5 shrink-0 cursor-pointer accent-tealem-600');
   box.type = 'checkbox';
   box.checked = task.done;
   box.dataset.action = 'toggle';
@@ -112,7 +112,7 @@ function renderList(state) {
 
 // Pick the friendly message for an empty list.
 function emptyMessage(state) {
-  if (state.tasks.length === 0) return 'No tasks yet. Add your first study task above!';
+  if (state.tasks.length === 0) return 'Your planner is empty. Add your first study task above!';
   if (state.search.trim() !== '') return 'No tasks match your search.';
   if (state.filter === 'active') return 'Nothing left to do. Great work! 🎉';
   if (state.filter === 'completed') return 'No completed tasks yet. Finish one and it shows up here.';
