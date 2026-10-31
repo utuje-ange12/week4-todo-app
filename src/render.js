@@ -1,9 +1,9 @@
 // Everything that draws the UI from the state object.
 // User text is only ever added with textContent (never innerHTML).
-import { getVisibleTasks, countActive } from './tasks.js';
+import { getVisibleTasks, countActive, progressPercent } from './tasks.js';
 
 const ITEM_CLASS =
-  'flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-700/40';
+    'flex items-center gap-3 rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-700/40';
 const BADGE_BASE = 'shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold';
 const BADGES = {
   high: 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200',
@@ -11,11 +11,11 @@ const BADGES = {
   low: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200',
 };
 const ICON_BUTTON =
-  'shrink-0 rounded-lg p-2 text-lg hover:bg-slate-200 dark:hover:bg-slate-600';
+    'shrink-0 rounded-lg p-2 text-lg hover:bg-slate-200 dark:hover:bg-slate-600';
 const FILTER_BASE = 'rounded-lg px-3 py-1.5 text-sm font-medium';
 const FILTER_ON = 'bg-indigo-600 text-white';
 const FILTER_OFF =
-  'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600';
+    'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600';
 
 // Shortcut for document.getElementById.
 const $ = (id) => document.getElementById(id);
@@ -93,11 +93,11 @@ function createTaskItem(task, edit) {
     return item;
   }
   item.append(
-    createCheckbox(task),
-    createText(task),
-    createBadge(task),
-    createIconButton(task, 'edit', '✏️', 'Edit task'),
-    createIconButton(task, 'delete', '🗑️', 'Delete task')
+      createCheckbox(task),
+      createText(task),
+      createBadge(task),
+      createIconButton(task, 'edit', '✏️', 'Edit task'),
+      createIconButton(task, 'delete', '🗑️', 'Delete task')
   );
   return item;
 }
@@ -129,6 +129,14 @@ function renderEmpty(state, visibleCount) {
 function renderCounter(state) {
   const count = countActive(state.tasks);
   $('counter').textContent = `${count} ${count === 1 ? 'task' : 'tasks'} left`;
+}
+
+// Update the progress bar and its percentage text.
+function renderProgress(state) {
+  const percent = progressPercent(state.tasks);
+  $('progress-fill').style.width = `${percent}%`;
+  $('progress-text').textContent = `${percent}%`;
+  $('progress-bar').setAttribute('aria-valuenow', String(percent));
 }
 
 // Highlight the active filter button.
@@ -176,6 +184,7 @@ export function render(state) {
   const visibleCount = renderList(state);
   renderEmpty(state, visibleCount);
   renderCounter(state);
+  renderProgress(state);
   renderFilters(state);
   renderControls(state);
   if (focusKey) {
