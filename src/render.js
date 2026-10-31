@@ -13,7 +13,7 @@ const BADGES = {
 const ICON_BUTTON =
     'shrink-0 rounded-lg p-2 text-lg hover:bg-slate-200 dark:hover:bg-slate-600';
 const FILTER_BASE = 'rounded-lg px-3 py-1.5 text-sm font-medium';
-const FILTER_ON = 'bg-indigo-600 text-white';
+const FILTER_ON = 'bg-teal-600 text-white';
 const FILTER_OFF =
     'bg-slate-200 text-slate-700 hover:bg-slate-300 dark:bg-slate-700 dark:text-slate-200 dark:hover:bg-slate-600';
 
@@ -31,7 +31,7 @@ function el(tag, className, text) {
 
 // Build the checkbox that toggles a task.
 function createCheckbox(task) {
-  const box = el('input', 'h-5 w-5 shrink-0 cursor-pointer accent-indigo-600');
+  const box = el('input', 'h-5 w-5 shrink-0 cursor-pointer accent-teal-600');
   box.type = 'checkbox';
   box.checked = task.done;
   box.dataset.action = 'toggle';
